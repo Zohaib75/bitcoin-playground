@@ -2,7 +2,7 @@ import { AddressDTO, AddressOptionsDTO } from "./hd_wallet.interfaces";
 import * as bitcoin from 'bitcoinjs-lib';
 import * as bip39 from 'bip39';
 
-export const generate = (options: AddressOptionsDTO, limit: number, page: number): AddressDTO[] => {
+export const generate = (options: AddressOptionsDTO, limit: number, page: number, network: number): AddressDTO[] => {
 
     const mnemonic: string = options.mnemonic;
 
@@ -36,7 +36,7 @@ export const generate = (options: AddressOptionsDTO, limit: number, page: number
 
         const { address, pubkey } = bitcoin.payments.p2wpkh({
             pubkey: derivedResult.publicKey,
-            network: bitcoin.networks.testnet,
+            network: network === 0 ? bitcoin.networks.bitcoin : bitcoin.networks.testnet,
         });
 
         let derivedAddress: AddressDTO = {

@@ -1,7 +1,7 @@
 import { MultiSigOptionsDTO } from "./multi_sig.interfaces";
 import * as bitcoin from 'bitcoinjs-lib';
 
-export const generate = (options: MultiSigOptionsDTO): string => {
+export const generate = (options: MultiSigOptionsDTO, network: number): string => {
 
     const pubkeys: Buffer[] = options.pubkeys.map(hex => Buffer.from(hex, 'hex'));
     const m: number = options.m;
@@ -10,9 +10,9 @@ export const generate = (options: MultiSigOptionsDTO): string => {
         redeem: bitcoin.payments.p2ms({
             m,
             pubkeys,
-            network: bitcoin.networks.testnet,
+            network: network === 0 ? bitcoin.networks.bitcoin : bitcoin.networks.testnet,
         }),
-        network: bitcoin.networks.testnet,
+        network: network === 0 ? bitcoin.networks.bitcoin : bitcoin.networks.testnet,
     });
 
     if (address === undefined)

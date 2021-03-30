@@ -4,13 +4,14 @@ import { AddressOptionsDTO } from "./hd_wallet.interfaces";
 
 export const HdWalletRouter = express.Router();
 
-HdWalletRouter.post("/addresses/:limit/:page", (req: Request, res: Response) => {
+HdWalletRouter.post("/addresses/:network/:limit/:page", (req: Request, res: Response) => {
     try {
         const options: AddressOptionsDTO = req.body;
         const limit: number = Number(req.params.limit);
         const page: number = Number(req.params.page);
+        const network: number = Number(req.params.network);
 
-        const listAddress = HdWalletService.generate(options, limit, page);
+        const listAddress = HdWalletService.generate(options, limit, page, network);
 
         res.status(201).json(listAddress);
     } catch (e) {

@@ -4,11 +4,12 @@ import { MultiSigOptionsDTO } from "./multi_sig.interfaces";
 
 export const MultiSigRouter = express.Router();
 
-MultiSigRouter.post("/address", (req: Request, res: Response) => {
+MultiSigRouter.post("/address/:network", (req: Request, res: Response) => {
     try {
         const options: MultiSigOptionsDTO = req.body;
+        const network: number = Number(req.params.network);
 
-        const address = MultiSigService.generate(options);
+        const address = MultiSigService.generate(options, network);
 
         res.status(201).json({ "p2sh": address });
     } catch (e) {
